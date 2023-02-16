@@ -5,7 +5,17 @@
 
 <Receipts>
 
-<ReceiptID> 1 </Receipt ID>
+<ReceiptID> 112 </ReceiptID>
+<Date> 12/12/2020 </Date>
+<Kind> Health </Kind>
+<Amount> 123.0 </Amount>
+<Company> SAD </Company>
+<Country> werwer </Country>
+<City> hasjkdfh </City>
+<Street> kjhsdfjkh </Street>
+<Number> 821 </Number>
+
+<ReceiptID> 1 </ReceiptID>
 <Date> 25/2/2014 </Date>
 <Kind> Other </Kind>
 <Amount> 2000.0 </Amount>
@@ -15,7 +25,7 @@
 <Street> Kaloudi </Street>
 <Number> 4 </Number>
 
-<ReceiptID> 3 </Receipt ID>
+<ReceiptID> 3 </ReceiptID>
 <Date> 5/6/2014 </Date>
 <Kind> Basic </Kind>
 <Amount> 4000.0 </Amount>
@@ -25,7 +35,7 @@
 <Street> Averof </Street>
 <Number> 100 </Number>
 
-<ReceiptID> 3424323 </Receipt ID>
+<ReceiptID> 3424323 </ReceiptID>
 <Date> 12/12/1212 </Date>
 <Kind> Other </Kind>
 <Amount> 38942.0 </Amount>

@@ -4,7 +4,9 @@ public class XMLLogWriter extends LogWriter {
 
   @Override
   public String createTag(String tagToFormat,String stringToSurround){
-    return "<"+tagToFormat.replace(" ","")+"> " + stringToSurround + " </"+tagToFormat+">";
+    return "<"+tagToFormat.replace(" ","") +
+            "> " + stringToSurround +
+            " </"+tagToFormat.replace(" ","") +">";
   }
 
   @Override

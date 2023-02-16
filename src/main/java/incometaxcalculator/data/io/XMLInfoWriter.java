@@ -4,7 +4,9 @@ public class XMLInfoWriter extends InfoWriter {
 
   @Override
   public String createTag(String tagToFormat,String stringToSuround){
-    return "<"+tagToFormat.replace(" ","")+"> " + stringToSuround + " </"+tagToFormat+">";
+    return "<"+tagToFormat.replace(" ","")+"> "
+            + stringToSuround +
+            " </"+tagToFormat.replace(" ","")+">";
   }
 
   @Override
