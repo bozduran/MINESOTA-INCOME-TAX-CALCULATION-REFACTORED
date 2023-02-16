@@ -1,0 +1,37 @@
+Name: Nikos Zisis
+AFM: 130456094
+Status: Single
+Income: 40000.0
+
+Receipts: 
+
+Receipt ID: 1
+Date: 25/2/2014
+Kind: Other
+Amount: 2000.0
+Company: Omega Watches
+Country: Greece
+City: Ioannina
+Street: Kaloudi
+Number: 4
+
+Receipt ID: 9090
+Date: 12/12/1212
+Kind: Other
+Amount: 4839.0
+Company: jkkj
+Country: null
+City: jnkjnkjnkj
+Street: jnkjnkjn
+Number: 4
+
+Receipt ID: 3
+Date: 5/6/2014
+Kind: Basic
+Amount: 4000.0
+Company: IKEA
+Country: Greece
+City: Ioannina
+Street: Averof
+Number: 100
+
