@@ -7,7 +7,6 @@ public class TXTLogWriter extends LogWriter {
     return tagToFormat+": "+ stringToSurround;
   }
 
-
   @Override
   public String fileType() {
     return "_LOG.txt";

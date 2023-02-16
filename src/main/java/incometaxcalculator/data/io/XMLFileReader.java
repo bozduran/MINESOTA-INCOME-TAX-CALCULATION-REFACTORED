@@ -11,8 +11,7 @@ public class XMLFileReader extends FileReader {
     while (!isEmpty(line = inputStream.readLine())) {
       String[] values = line.split(" ", 3);
       if (values[0].equals("<ReceiptID>")) {
-        int receiptId = Integer.parseInt(values[1].trim());
-        return receiptId;
+        return Integer.parseInt(values[1].trim());
       }
     }
     return -1;

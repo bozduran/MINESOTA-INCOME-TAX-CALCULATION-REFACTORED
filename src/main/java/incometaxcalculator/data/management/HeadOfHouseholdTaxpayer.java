@@ -19,6 +19,6 @@ public class HeadOfHouseholdTaxpayer extends Taxpayer {
 
 
   public double calculateBasicTax() {
-    return super.calculateBasicTax(incomeVariables , taxCalculateVariables);
+    return calculateBasicTax(incomeVariables , taxCalculateVariables);
   }
 }

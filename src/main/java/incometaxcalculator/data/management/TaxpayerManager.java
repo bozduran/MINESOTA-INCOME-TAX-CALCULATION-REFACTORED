@@ -44,11 +44,8 @@ public class TaxpayerManager {
     Taxpayer taxpayer = taxpayerHashMap.get(taxRegistrationNumber);
     taxpayerHashMap.remove(taxRegistrationNumber);
     Map<Integer, Receipt> receiptsHashMap = taxpayer.getReceiptHashMap();
-    Iterator<HashMap.Entry<Integer, Receipt>> iterator = receiptsHashMap.entrySet().iterator();
-    while (iterator.hasNext()) {
-      HashMap.Entry<Integer, Receipt> entry = iterator.next();
-      Receipt receipt = entry.getValue();
-      receiptOwnerTRN.remove(receipt.getId());
+    for (HashMap.Entry<Integer, Receipt> entry : receiptsHashMap.entrySet()) {
+      receiptOwnerTRN.remove(entry.getValue().getId());
     }
   }
 
@@ -72,16 +69,13 @@ public class TaxpayerManager {
   }
 
   private void updateFiles(int taxRegistrationNumber) throws IOException {
-
     fileFactory.fileUpdate(taxRegistrationNumber);
-
   }
 
   public void saveLogFile(int taxRegistrationNumber, String fileFormat)
       throws IOException, WrongFileFormatException {
     FileWriter writer = logFileFactory.createLogWriter(fileFormat);
     writer.generateFile(taxRegistrationNumber);
-
   }
 
   public boolean containsTaxpayer(int taxRegistrationNumber) {

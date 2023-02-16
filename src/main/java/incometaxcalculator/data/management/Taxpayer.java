@@ -69,6 +69,7 @@ public abstract class Taxpayer {
     Receipt receipt = receiptHashMap.get(receiptId);
 
     int kindCode = receiptKindMap.get(receipt.getKind());
+
     if (kindCode >= 0 && kindCode <= 4){
       amountPerReceiptsKind[kindCode] -= receipt.getAmount();
     }else{

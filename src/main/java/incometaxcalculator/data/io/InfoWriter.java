@@ -54,13 +54,13 @@ public abstract class InfoWriter implements FileWriter{
             Receipt receipt = entry.getValue();
             outputStream.println( createIntegerNumber( receiptIDTag,receipt.getId( ) ) );
             outputStream.println( createTagString(dateTag,receipt.getIssueDate()));
-            outputStream.println( createTagString( kindTag,receipt.getKind() ) );//getReceiptKind(receipt));
-            outputStream.println( createFloatNumber( amountTag,receipt.getAmount() ));//getReceiptAmount(receipt));
-            outputStream.println( createTagString( companyTag,receipt.getCompany().getName()) );//getCompanyName(receipt));
-            outputStream.println( createTagString(countryTag,receipt.getCompany().getAddress().getCountry())  ); //getCompanyCountry(receipt));
-            outputStream.println( createTagString(cityTag,receipt.getCompany().getAddress().getCity()) );//getCompanyCity(receipt));
-            outputStream.println( createTagString(streetTag,receipt.getCompany().getAddress().getStreet()) );//getCompanyStreet(receipt));
-            outputStream.println( createIntegerNumber(numberTag,receipt.getCompany().getAddress().getNumber()) );//getCompanyNumber(receipt));
+            outputStream.println( createTagString( kindTag,receipt.getKind() ) );
+            outputStream.println( createFloatNumber( amountTag,receipt.getAmount() ));
+            outputStream.println( createTagString( companyTag,receipt.getCompany().getName()) );
+            outputStream.println( createTagString(countryTag,receipt.getCompany().getAddress().getCountry())  );
+            outputStream.println( createTagString(cityTag,receipt.getCompany().getAddress().getCity()) );
+            outputStream.println( createTagString(streetTag,receipt.getCompany().getAddress().getStreet()) );
+            outputStream.println( createIntegerNumber(numberTag,receipt.getCompany().getAddress().getNumber()) );
             outputStream.println();
 
 
@@ -84,19 +84,5 @@ public abstract class InfoWriter implements FileWriter{
     public String createFloatNumber(String tag,float number) {
         return createTag(tag, String.valueOf(number));
     }
-/*
-    public String getName(TaxpayerManager manager, int taxRegistrationNumber){
-        return manager.getTaxpayerName(taxRegistrationNumber);
-    }
-
-    public String getStatus(TaxpayerManager manager, int taxRegistrationNumber){
-        return manager.getTaxpayerStatus(taxRegistrationNumber);
-    }
-
-
-    public String getIncome(TaxpayerManager manager, int taxRegistrationNumber){
-        return manager.getTaxpayerIncome(taxRegistrationNumber);
-    }
-*/
 
 }

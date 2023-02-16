@@ -29,12 +29,12 @@ public abstract class FileReader {
       WrongFileFormatException, WrongReceiptKindException, WrongReceiptDateException {
 
     BufferedReader inputStream = new BufferedReader(new java.io.FileReader(fileName));
-    String fullname = getValueOfField(inputStream.readLine());
+    String fullName = getValueOfField(inputStream.readLine());
     int taxRegistrationNumber = Integer.parseInt(getValueOfField(inputStream.readLine()));
     String status = getValueOfField(inputStream.readLine());
     float income = Float.parseFloat(getValueOfField(inputStream.readLine()));
 
-    createTaxpayer(fullname,
+    createTaxpayer(fullName,
             taxRegistrationNumber,
             income,
             status);

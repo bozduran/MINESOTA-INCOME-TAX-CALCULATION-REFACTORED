@@ -12,8 +12,7 @@ public class TXTFileReader extends FileReader {
       String[] values = line.split(" ", 3);
       if (values[0].equals("Receipt")) {
         if (values[1].equals("ID:")) {
-          int receiptId = Integer.parseInt(values[2].trim());
-          return receiptId;
+          return Integer.parseInt(values[2].trim());
         }
       }
     }

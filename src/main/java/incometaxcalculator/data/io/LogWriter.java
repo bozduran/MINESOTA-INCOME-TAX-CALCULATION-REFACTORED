@@ -9,8 +9,6 @@ import java.util.Map;
 
 public abstract class LogWriter implements FileWriter {
 
-
-
     public static Map<String, Short> receiptKindMap;
     static {
         receiptKindMap = new HashMap<>();
@@ -48,18 +46,7 @@ public abstract class LogWriter implements FileWriter {
                 .println( createDoubleNumber("TotalTax" ,manager.getTaxpayerTotalTax(taxRegistrationNumber) ));
         outputStream.println( createIntegerNumber(
                 "Receipts " , manager.getTaxpayerTotalReceiptsGathered(taxRegistrationNumber) ));
-        /*
-        outputStream.println( createFloatNumber(
-                "Entertainment " , manager.getTaxpayerAmountOfReceiptKind(taxRegistrationNumber, ENTERTAINMENT)));
-        outputStream.println( createFloatNumber(
-                "Basic" , manager.getTaxpayerAmountOfReceiptKind(taxRegistrationNumber, BASIC) ));
-        outputStream.println( createFloatNumber(
-                "Travel" , manager.getTaxpayerAmountOfReceiptKind(taxRegistrationNumber, TRAVEL) ));
-        outputStream.println( createFloatNumber(
-                "Health" , manager.getTaxpayerAmountOfReceiptKind(taxRegistrationNumber, HEALTH) ) );
-        outputStream.println( createFloatNumber(
-                "Other" , manager.getTaxpayerAmountOfReceiptKind(taxRegistrationNumber, OTHER) ));
-        */
+
         for (Map.Entry<String,Short> entry : receiptKindMap.entrySet()){
             outputStream.println( createFloatNumber(
                     entry.getKey() , manager.getTaxpayerAmountOfReceiptKind(taxRegistrationNumber, entry.getValue()) ));
