@@ -3,8 +3,6 @@ package incometaxcalculator.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle;
 
 
 public class NewReceiptDialog extends JDialog {
@@ -58,14 +56,14 @@ public class NewReceiptDialog extends JDialog {
 
 	private void save(ActionEvent e) {
 		// TODO add your code here
-		receiptID = Integer.valueOf( receiptIDTextField.getText() );
+		receiptID = Integer.parseInt( receiptIDTextField.getText() );
 		kind = kindTextField.getText();
 		date = dateTextField.getText();
 		company = companyTextField.getText();
 		city = cityTextField.getText();
 		street = streetTextField.getText();
-		amount = Float.valueOf( amountTextField.getText() );
-		number = Integer.valueOf( numberTextField.getText());
+		amount = Float.parseFloat( amountTextField.getText() );
+		number = Integer.parseInt( numberTextField.getText());
 		setVisible(false);
 	}
 

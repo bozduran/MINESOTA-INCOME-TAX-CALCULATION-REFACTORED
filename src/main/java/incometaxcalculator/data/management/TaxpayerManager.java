@@ -2,7 +2,6 @@ package incometaxcalculator.data.management;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import incometaxcalculator.data.io.*;
@@ -99,11 +98,8 @@ public class TaxpayerManager {
       throws NumberFormatException, IOException, WrongFileFormatException, WrongFileEndingException,
       WrongTaxpayerStatusException, WrongReceiptKindException, WrongReceiptDateException {
     String[] ending = fileName.split("\\.");
-    System.out.println(ending[1]);
     FileReader reader = fileReaderFactory.fileReaderCreate(ending[1]);
     reader.readFile(fileName);
-
-
   }
 
   public String getTaxpayerName(int taxRegistrationNumber) {

@@ -38,6 +38,7 @@ public abstract class FileReader {
             taxRegistrationNumber,
             income,
             status);
+
     while (readReceipt(inputStream, taxRegistrationNumber)) ;
   }
 

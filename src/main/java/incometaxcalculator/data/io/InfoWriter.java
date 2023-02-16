@@ -48,21 +48,18 @@ public abstract class InfoWriter implements FileWriter{
     public void generateTaxpayerReceipts(int taxRegistrationNumber, PrintWriter outputStream,
                                          TaxpayerManager manager){
         Map<Integer, Receipt> receiptsHashMap = manager.getReceiptHashMap(taxRegistrationNumber);
-        Iterator<HashMap.Entry<Integer, Receipt>> iterator = receiptsHashMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            HashMap.Entry<Integer, Receipt> entry = iterator.next();
+        for (HashMap.Entry<Integer, Receipt> entry : receiptsHashMap.entrySet()) {
             Receipt receipt = entry.getValue();
-            outputStream.println( createIntegerNumber( receiptIDTag,receipt.getId( ) ) );
-            outputStream.println( createTagString(dateTag,receipt.getIssueDate()));
-            outputStream.println( createTagString( kindTag,receipt.getKind() ) );
-            outputStream.println( createFloatNumber( amountTag,receipt.getAmount() ));
-            outputStream.println( createTagString( companyTag,receipt.getCompany().getName()) );
-            outputStream.println( createTagString(countryTag,receipt.getCompany().getAddress().getCountry())  );
-            outputStream.println( createTagString(cityTag,receipt.getCompany().getAddress().getCity()) );
-            outputStream.println( createTagString(streetTag,receipt.getCompany().getAddress().getStreet()) );
-            outputStream.println( createIntegerNumber(numberTag,receipt.getCompany().getAddress().getNumber()) );
+            outputStream.println(createIntegerNumber(receiptIDTag, receipt.getId()));
+            outputStream.println(createTagString(dateTag, receipt.getIssueDate()));
+            outputStream.println(createTagString(kindTag, receipt.getKind()));
+            outputStream.println(createFloatNumber(amountTag, receipt.getAmount()));
+            outputStream.println(createTagString(companyTag, receipt.getCompany().getName()));
+            outputStream.println(createTagString(countryTag, receipt.getCompany().getAddress().getCountry()));
+            outputStream.println(createTagString(cityTag, receipt.getCompany().getAddress().getCity()));
+            outputStream.println(createTagString(streetTag, receipt.getCompany().getAddress().getStreet()));
+            outputStream.println(createIntegerNumber(numberTag, receipt.getCompany().getAddress().getNumber()));
             outputStream.println();
-
 
         }
     }

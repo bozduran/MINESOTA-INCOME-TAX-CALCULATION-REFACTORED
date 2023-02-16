@@ -1,30 +1,25 @@
 package incometaxcalculator.gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import incometaxcalculator.data.management.*;
+import incometaxcalculator.exceptions.*;
+
 import javax.swing.*;
-import javax.swing.GroupLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import incometaxcalculator.data.management.*;
-
-import incometaxcalculator.exceptions.*;
-/*
- * Created by JFormDesigner on Sun Oct 23 18:50:00 CEST 2022
- */
-
-
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 
 /**
- * @author unknown
+ * Boz Ntouran
  */
 public class GraphicalInterface extends JFrame {
 
+    private final String dataFolderPath = "AFMs/";
     private final TaxpayerManager taxpayerManager = new TaxpayerManager();
     private Taxpayer currentTaxPayer;
     private final DefaultListModel<String> listOfTaxPayersAfm = new DefaultListModel<>();
@@ -56,11 +51,10 @@ public class GraphicalInterface extends JFrame {
     private void viewTaxPayer(ActionEvent e) {
 
         if (taxPayersList.isSelectionEmpty()){
+            return;
         }else{
             loadTaxPayerInformation( (String) taxPayersList.getSelectedValue());
             taxPayerTabbedPane.setSelectedIndex(0);
-
-
         }
 
     }
@@ -74,10 +68,10 @@ public class GraphicalInterface extends JFrame {
         if (taxpayerManager.containsTaxpayer(afm)){
             return;
         }
-        taxRegistrationNumberFile = ("AFMs/" + afm + "_INFO." + fileTypeToLoad);
+        taxRegistrationNumberFile = (dataFolderPath + afm + "_INFO." + fileTypeToLoad);
         try {
 
-            taxRegistrationNumberFile = ("AFMs/" + afm + "_INFO." + fileTypeToLoad);
+            taxRegistrationNumberFile = (dataFolderPath + afm + "_INFO." + fileTypeToLoad);
             taxpayerManager.loadTaxpayer(taxRegistrationNumberFile);
             listOfTaxPayersAfm.addElement(String.valueOf(afm));
 
@@ -103,10 +97,9 @@ public class GraphicalInterface extends JFrame {
             JOptionPane.showMessageDialog(null, "This taxpayer is already loaded.");
         } else {
             try {
-                taxRegistrationNumberFile = ("AFMs/" + afm + "_INFO." + fileTypeToLoad);
+                taxRegistrationNumberFile = (dataFolderPath + afm + "_INFO." + fileTypeToLoad);
                 taxpayerManager.loadTaxpayer(taxRegistrationNumberFile);
                 listOfTaxPayersAfm.addElement(String.valueOf(afm));
-                // textPane.setText(taxpayersTRN);
             } catch (NumberFormatException e1) {
                 JOptionPane.showMessageDialog(null,
                         "The tax registration number must have only digits.");
@@ -133,7 +126,11 @@ public class GraphicalInterface extends JFrame {
         int afm = 0;
 
         final File folder = new File("AFMs" );
-        for (final File fileEntry : folder.listFiles()) {
+        if (!folder.exists()){
+            return;
+        }
+
+        for (final File fileEntry : Objects.requireNonNull(folder.listFiles())) {
             afm = Integer.parseInt( fileEntry.getName().split("_")[0] );
             if(!listOfTaxPayersAfm.contains(String.valueOf(afm))){
                 loadTaxPayerFromFile(afm);
@@ -175,7 +172,7 @@ public class GraphicalInterface extends JFrame {
         if (taxPayersList.isSelectionEmpty()){
             return -1;
         }else{
-            return Integer.valueOf( (String) taxPayersList.getSelectedValue());
+            return Integer.parseInt( (String) taxPayersList.getSelectedValue());
         }
     }
     private void showGraphs(ActionEvent e) {
@@ -206,22 +203,22 @@ public class GraphicalInterface extends JFrame {
         // TODO add your code here
         int selectedReceipt;
         if (receiptsList.isSelectionEmpty()){
-            //plese select a receipt
+            return;
         }else{
-             selectedReceipt = Integer.valueOf( (String) receiptsList.getSelectedValue() );
+             selectedReceipt = Integer.parseInt( (String) receiptsList.getSelectedValue() );
             Map<Integer, Receipt> receipts = currentTaxPayer.getReceiptHashMap();
-            Receipt currentReceipt = receipts.get(Integer.valueOf(selectedReceipt) );
+            Receipt currentReceipt = receipts.get(selectedReceipt);
             try {
                 taxpayerManager.removeReceipt(selectedReceipt);
-                taxpayerManager.addReceipt(Integer.valueOf(receiptIdTextField.getText()),
+                taxpayerManager.addReceipt(Integer.parseInt(receiptIdTextField.getText()),
                         dateTextField.getText(),
-                        Float.valueOf( amountTextField.getText()),
+                        Float.parseFloat( amountTextField.getText()),
                         kindTextField.getText(),
                         new Company(companyTextField.getText(),
                         countryTextField.getText(),
                         cityTextField.getText(),
                         streetTextField.getText(),
-                        Integer.valueOf( numberTextField.getText()) )
+                        Integer.parseInt( numberTextField.getText()) )
                 ,getSelectedAFM());
 
             } catch (WrongReceiptDateException | IOException |
@@ -241,14 +238,12 @@ public class GraphicalInterface extends JFrame {
             statusComboBox.setSelectedItem("Married Filing Separately");
         }else if(currentTaxPayer instanceof  MarriedFilingJointlyTaxpayer){
             statusComboBox.setSelectedItem("Married Filing Jointly");
-
         }else if(currentTaxPayer instanceof HeadOfHouseholdTaxpayer){
             statusComboBox.setSelectedItem("HeadOfHouseholdTaxpayer");
-
         }else{
             statusComboBox.setSelectedItem("Single");
-
         }
+
         Map<Integer, Receipt> receipts = currentTaxPayer.getReceiptHashMap();
         listOfTaxPayersReceipts.clear();
         for(Integer id : receipts.keySet()){
@@ -269,7 +264,6 @@ public class GraphicalInterface extends JFrame {
         amountTextField.setText(String.valueOf(currentReceipt.getAmount()));
         companyTextField.setText(currentReceipt.getCompany().getName());
         countryTextField.setText(currentReceipt.getCompany().getAddress().getCountry());
-        //city street number
         cityTextField.setText(currentReceipt.getCompany().getAddress().getCity());
         streetTextField.setText(currentReceipt.getCompany().getAddress().getStreet());
         numberTextField.setText( String.valueOf(currentReceipt.getCompany().getAddress().getNumber() ));
@@ -281,11 +275,9 @@ public class GraphicalInterface extends JFrame {
         }else{
             try {
                 taxpayerManager.removeReceipt(
-                        Integer.valueOf((String)receiptsList.getSelectedValue() ));
+                        Integer.parseInt((String)receiptsList.getSelectedValue() ));
                 loadTaxPayerInformation( (String) taxPayersList.getSelectedValue());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (WrongReceiptKindException ex) {
+            } catch (IOException | WrongReceiptKindException ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -294,6 +286,7 @@ public class GraphicalInterface extends JFrame {
     private void deleteSelectedTaxPayer(ActionEvent e) {
 
         if ( taxPayersList.isSelectionEmpty()){
+            return;
         }else{
             taxpayerManager.removeTaxpayer( 
                     getSelectedAFM() );
@@ -303,47 +296,46 @@ public class GraphicalInterface extends JFrame {
 
     private void initComponents() {
 
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        menuBar1 = new JMenuBar();
-        taxPayerLoadMenu = new JMenu();
-        loadByAFMMenuItem = new JMenuItem();
-        loadAllTaxPayerMenuItem = new JMenuItem();
-        taxPayerOptionsMenu = new JMenu();
-        viewTaxPayerMenuItem = new JMenuItem();
-        deleteSelectedTaxPayerMenuItem = new JMenuItem();
-        receiptMenu = new JMenu();
-        viewSelectedReceipt = new JMenuItem();
-        saveChangesToReceiptMenuItem = new JMenuItem();
-        addNewReceiptMenuItem = new JMenuItem();
-        DeleteSelectedReceiptMenuItem = new JMenuItem();
-        showGraphsMenu = new JMenu();
-        showGraphsMenuItem = new JMenuItem();
-        textMenuItem = new JMenuItem();
-        xmlMenuItem = new JMenuItem();
-        exitMenu = new JMenu();
+        JMenuBar menuBar1 = new JMenuBar();
+        JMenu taxPayerLoadMenu = new JMenu();
+        JMenuItem loadByAFMMenuItem = new JMenuItem();
+        JMenuItem loadAllTaxPayerMenuItem = new JMenuItem();
+        JMenu taxPayerOptionsMenu = new JMenu();
+        JMenuItem viewTaxPayerMenuItem = new JMenuItem();
+        JMenuItem deleteSelectedTaxPayerMenuItem = new JMenuItem();
+        JMenu receiptMenu = new JMenu();
+        JMenuItem viewSelectedReceipt = new JMenuItem();
+        JMenuItem saveChangesToReceiptMenuItem = new JMenuItem();
+        JMenuItem addNewReceiptMenuItem = new JMenuItem();
+        JMenuItem deleteSelectedReceiptMenuItem = new JMenuItem();
+        JMenu showGraphsMenu = new JMenu();
+        JMenuItem showGraphsMenuItem = new JMenuItem();
+        JMenuItem textMenuItem = new JMenuItem();
+        JMenuItem xmlMenuItem = new JMenuItem();
+        JMenu exitMenu = new JMenu();
         taxPayerTabbedPane = new JTabbedPane();
-        taxPayerInformationPane = new JPanel();
-        nameLabel = new JLabel();
+        JPanel taxPayerInformationPane = new JPanel();
+        JLabel nameLabel = new JLabel();
         nameTextfield = new JTextField();
-        afmLabel = new JLabel();
+        JLabel afmLabel = new JLabel();
         afmTextField = new JTextField();
-        statusLabel = new JLabel();
+        JLabel statusLabel = new JLabel();
         String[] status = {"Single","Married Filing Jointly","Married Filing Separately","Head οf Household"};
         statusComboBox = new JComboBox(status);
-        incomeLabel = new JLabel();
+        JLabel incomeLabel = new JLabel();
         incomeTextField = new JTextField();
-        receiptInformationSplitPane = new JSplitPane();
-        panel2 = new JPanel();
-        receiptIdLabel = new JLabel();
-        dateLabel = new JLabel();
-        kindLabel = new JLabel();
-        amountLabel = new JLabel();
-        companyLabel = new JLabel();
-        countryLabel = new JLabel();
-        cityLabel = new JLabel();
-        streetLabel = new JLabel();
-        numberLabel = new JLabel();
-        panel3 = new JPanel();
+        JSplitPane receiptInformationSplitPane = new JSplitPane();
+        JPanel panel2 = new JPanel();
+        JLabel receiptIdLabel = new JLabel();
+        JLabel dateLabel = new JLabel();
+        JLabel kindLabel = new JLabel();
+        JLabel amountLabel = new JLabel();
+        JLabel companyLabel = new JLabel();
+        JLabel countryLabel = new JLabel();
+        JLabel cityLabel = new JLabel();
+        JLabel streetLabel = new JLabel();
+        JLabel numberLabel = new JLabel();
+        JPanel panel3 = new JPanel();
         receiptIdTextField = new JTextField();
         dateTextField = new JTextField();
         kindTextField = new JTextField();
@@ -353,17 +345,16 @@ public class GraphicalInterface extends JFrame {
         cityTextField = new JTextField();
         streetTextField = new JTextField();
         numberTextField = new JTextField();
-        tabbedPane1 = new JTabbedPane();
-        taxPayerScrollPane = new JScrollPane();
+        JTabbedPane tabbedPane1 = new JTabbedPane();
+        JScrollPane taxPayerScrollPane = new JScrollPane();
         taxPayersList = new JList( listOfTaxPayersAfm );
-        //taxPayersList.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
         taxPayersList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
                 loadTaxPayerInformation( (String) taxPayersList.getSelectedValue() );
             }
         });
-        receiptScrollPane = new JScrollPane();
+        JScrollPane receiptScrollPane = new JScrollPane();
         receiptsList = new JList(listOfTaxPayersReceipts);
         receiptsList.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -430,9 +421,9 @@ public class GraphicalInterface extends JFrame {
                 receiptMenu.add(addNewReceiptMenuItem);
 
                 //---- DeleteSelectedReceiptMenuItem ----
-                DeleteSelectedReceiptMenuItem.setText("Delected selected receipt");
-                DeleteSelectedReceiptMenuItem.addActionListener(e -> DeleteSelectedReceipt(e));
-                receiptMenu.add(DeleteSelectedReceiptMenuItem);
+                deleteSelectedReceiptMenuItem.setText("Delected selected receipt");
+                deleteSelectedReceiptMenuItem.addActionListener(e -> DeleteSelectedReceipt(e));
+                receiptMenu.add(deleteSelectedReceiptMenuItem);
             }
             menuBar1.add(receiptMenu);
 
@@ -605,49 +596,13 @@ public class GraphicalInterface extends JFrame {
         );
         pack();
         setLocationRelativeTo(getOwner());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    private JMenuBar menuBar1;
-    private JMenu taxPayerLoadMenu;
-    private JMenuItem loadByAFMMenuItem;
-    private JMenuItem loadAllTaxPayerMenuItem;
-    private JMenu taxPayerOptionsMenu;
-    private JMenuItem viewTaxPayerMenuItem;
-    private JMenuItem deleteSelectedTaxPayerMenuItem;
-    private JMenu receiptMenu;
-    private JMenuItem viewSelectedReceipt;
-    private JMenuItem saveChangesToReceiptMenuItem;
-    private JMenuItem addNewReceiptMenuItem;
-    private JMenuItem DeleteSelectedReceiptMenuItem;
-    private JMenu showGraphsMenu;
-    private JMenuItem showGraphsMenuItem;
-    private JMenuItem textMenuItem;
-    private JMenuItem xmlMenuItem;
-    private JMenu exitMenu;
     private JTabbedPane taxPayerTabbedPane;
-    private JPanel taxPayerInformationPane;
-    private JLabel nameLabel;
     private JTextField nameTextfield;
-    private JLabel afmLabel;
     private JTextField afmTextField;
-    private JLabel statusLabel;
     private JComboBox statusComboBox;
-    private JLabel incomeLabel;
     private JTextField incomeTextField;
-    private JSplitPane receiptInformationSplitPane;
-    private JPanel panel2;
-    private JLabel receiptIdLabel;
-    private JLabel dateLabel;
-    private JLabel kindLabel;
-    private JLabel amountLabel;
-    private JLabel companyLabel;
-    private JLabel countryLabel;
-    private JLabel cityLabel;
-    private JLabel streetLabel;
-    private JLabel numberLabel;
-    private JPanel panel3;
     private JTextField receiptIdTextField;
     private JTextField dateTextField;
     private JTextField kindTextField;
@@ -657,10 +612,7 @@ public class GraphicalInterface extends JFrame {
     private JTextField cityTextField;
     private JTextField streetTextField;
     private JTextField numberTextField;
-    private JTabbedPane tabbedPane1;
-    private JScrollPane taxPayerScrollPane;
     private JList taxPayersList;
-    private JScrollPane receiptScrollPane;
     private JList receiptsList;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
